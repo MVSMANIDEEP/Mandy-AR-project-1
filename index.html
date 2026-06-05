@@ -1,1 +1,42 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mind-ar-image-aframe.prod.js"></script>
+    
+    <style>
+      /* Hide the default A-Frame watermark button */
+      .a-enter-vr-button { display: none !important; }
+    </style>
+  </head>
+  <body>
+    
+    <a-scene mindar-image="imageTargetSrc: ./targets.mind;" color-space="sRGB" renderer="colorManagement: true, physicallyCorrectLights" vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
+      
+      <a-assets>
+        <img id="card" src="./IMG_0898.jpg" />
+        
+        <video id="ar-video" src="./copy.mp4" loop="true" crossorigin="anonymous" playsinline webkit-playsinline></video>
+      </a-assets>
 
+      <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
+
+      <a-entity mindar-image-target="targetIndex: 0">
+        <a-video src="#ar-video" width="1" height="0.55" position="0 0 0" rotation="0 0 0"></a-video>
+      </a-entity>
+      
+    </a-scene>
+
+    <script>
+      const targetEntity = document.querySelector('[mindar-image-target]');
+      const videoElement = document.querySelector('#ar-video');
+      targetEntity.addEventListener("targetFound", event => {
+        videoElement.play();
+      });
+      targetEntity.addEventListener("targetLost", event => {
+        videoElement.pause();
+      });
+    </script>
+  </body>
+</html>
